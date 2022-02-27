@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: b9ade967396b26b61f04185515220e5c9c1ce43ccd6a365b13d0e3131eac44d8
+    url: jdbc:postgresql://ec2-3-227-44-84.compute-1.amazonaws.com:5432/d1vhtrfl8irt1
+    username: ctixcmccpmupvr
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: none
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+app:
+  jwt:
+    secret:
+      access: thiIsMySecretKey
+      refresh: thisIsMyRefreshSecret
+    expirationMs: 100000000
