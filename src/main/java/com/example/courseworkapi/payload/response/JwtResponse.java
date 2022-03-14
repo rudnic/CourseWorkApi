@@ -1,6 +1,6 @@
 package com.example.courseworkapi.payload.response;
 
-import com.example.courseworkapi.models.Role;
+import com.example.courseworkapi.models.ENRoles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,5 +13,5 @@ public class JwtResponse {
     private final String type = "Bearer";
     private Long id;
     private String email;
-    private Set<Role> roles;
+    private ENRoles role;
 }

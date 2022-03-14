@@ -1,7 +1,6 @@
 package com.example.courseworkapi.controller;
 
 import com.example.courseworkapi.models.ENRoles;
-import com.example.courseworkapi.models.Role;
 import com.example.courseworkapi.models.User;
 import com.example.courseworkapi.payload.request.LoginRequest;
 import com.example.courseworkapi.payload.request.SignupRequest;
@@ -22,7 +21,8 @@ import java.util.HashSet;
 
 @RestController
 @RequestMapping("/api/auth")
-public class MainController {
+@CrossOrigin(origins = "http://localhost:4200")
+public class AuthController {
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -39,23 +39,14 @@ public class MainController {
     @Autowired
     JwtProvider jwtProvider;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-//
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateAccessToken(loginRequest.getUsername());
-        System.out.println(jwt);
         User user = (User) userService.loadUserByUsername(loginRequest.getUsername());
-        System.out.println(user);
         return ResponseEntity.ok(new JwtResponse(jwt,
                 user.getId(),
                 user.getEmail(),
-                user.getRoles()));
+                user.getRole()));
     }
 
     @PostMapping("/signup")
@@ -65,11 +56,7 @@ public class MainController {
         user.setPassword(signupRequest.getPassword());
         user.setFirstname(signupRequest.getFirstname());
         user.setLastname(signupRequest.getLastname());
-
-        HashSet<Role> roles = new HashSet<>();
-        roles.add()
-
-        //user.setRoles(new HashSet<String>().add("ROLE_USER"));
+        user.setRole(ENRoles.ROLE_USER);
 
         userService.saveUser(user);
         return new ResponseEntity<>(new MessageResponse("User registered successfully!"), HttpStatus.OK);
