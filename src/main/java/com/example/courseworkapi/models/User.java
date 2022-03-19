@@ -2,7 +2,6 @@ package com.example.courseworkapi.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -20,6 +18,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class User implements UserDetails, Serializable {
 
     @Id
@@ -34,8 +33,23 @@ public class User implements UserDetails, Serializable {
     private ENRoles role;
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
+    // @JsonBackReference
     private List<Review> reviews;
+
+    /*@ManyToMany
+    @JoinTable(name = "user_ratings",
+        joinColumns = {
+            @JoinColumn(name = "user_id", referencedColumnName = "id")
+        },
+        inverseJoinColumns = {
+            @JoinColumn(name = "object_id", referencedColumnName = "id")
+        }
+    )
+    private List<Objects> ratedObjects;*/
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    // @JsonManagedReference
+    private List<Rating> ratings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -66,5 +80,9 @@ public class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
+
+    /*public void addRatedObject(Objects obj) {
+        this.getRatedObjects().add(obj);
+    }*/
 
 }

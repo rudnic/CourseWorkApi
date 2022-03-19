@@ -1,10 +1,9 @@
 package com.example.courseworkapi.controller;
 
 import com.example.courseworkapi.dto.ProfileDTO;
-import com.example.courseworkapi.models.EObjectType;
-import com.example.courseworkapi.models.Review;
-import com.example.courseworkapi.models.User;
+import com.example.courseworkapi.models.*;
 import com.example.courseworkapi.repository.ObjectsRepository;
+import com.example.courseworkapi.repository.RatingRepository;
 import com.example.courseworkapi.repository.ReviewRepository;
 import com.example.courseworkapi.repository.UserRepository;
 import com.example.courseworkapi.security.jwt.JwtProvider;
@@ -33,6 +32,12 @@ public class UserController {
     @Autowired
     ObjectsRepository objectsRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RatingRepository ratingRepository;
+
     @GetMapping("/profile/{id}")
     public ResponseEntity<?> getProfile(@PathVariable(name = "id") Long id) {
 
@@ -41,16 +46,28 @@ public class UserController {
         if (!optUser.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ProfileDTO profileDTO = new ProfileDTO();
+        ProfileDTO profileDTO = new ProfileDTO(optUser.get());
 
+        /*
         profileDTO.setId(optUser.get().getId());
         profileDTO.setEmail(optUser.get().getEmail());
         profileDTO.setReviews(optUser.get().getReviews());
         profileDTO.setFirstname(optUser.get().getFirstname());
         profileDTO.setLastname(optUser.get().getLastname());
+        profileDTO.setRatings(optUser.get().getRatings());
+         */
+
 
         return new ResponseEntity<>(profileDTO, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/rate")
+    public ResponseEntity<?> rateObject() {
+
+        ratingRepository.save(new Rating(userRepository.getById(7L), objectsRepository.getById(9L), 4.0F));
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/add-review")

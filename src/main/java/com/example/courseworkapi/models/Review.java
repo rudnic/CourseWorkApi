@@ -24,9 +24,8 @@ public class Review implements Serializable {
     @JoinColumn(name = "object_id")
     private Objects object;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    // @JsonBackReference
     private User user;
 
     @Column(name = "object_type")

@@ -3,10 +3,14 @@ package com.example.courseworkapi.controller;
 import com.example.courseworkapi.dto.ObjectDTO;
 import com.example.courseworkapi.dto.ObjectsListDTO;
 import com.example.courseworkapi.models.Objects;
+import com.example.courseworkapi.models.Rating;
 import com.example.courseworkapi.models.Review;
 import com.example.courseworkapi.models.User;
 import com.example.courseworkapi.payload.request.AddReviewRequest;
+import com.example.courseworkapi.payload.request.RateObjectRequest;
+import com.example.courseworkapi.repository.RatingRepository;
 import com.example.courseworkapi.repository.ReviewRepository;
+import com.example.courseworkapi.repository.UserRepository;
 import com.example.courseworkapi.services.object.ObjectsService;
 import com.example.courseworkapi.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,12 @@ public class ObjectsController {
     @Autowired
     private ObjectsService objectsService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository;
+
     @GetMapping("/objects/{id}")
     public ResponseEntity<?> getObject(@PathVariable(name = "id") Long id) {
 
@@ -36,12 +46,17 @@ public class ObjectsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        ObjectDTO objectDTO = new ObjectDTO();
+
+        ObjectDTO objectDTO = new ObjectDTO(obj.get());
+        /*
         objectDTO.setId(obj.get().getId());
         objectDTO.setName(obj.get().getName());
         objectDTO.setPicture(obj.get().getPicture());
         objectDTO.setType(obj.get().getType());
         objectDTO.setReview(obj.get().getReview());
+        objectDTO.setRating(obj.get().getRating());
+        objectDTO.setRatings(obj.get().getRatings());
+         */
 
         return new ResponseEntity<>(objectDTO, HttpStatus.OK);
     }
@@ -56,7 +71,7 @@ public class ObjectsController {
     }
 
     @GetMapping(value = "/objects", params = {"type"})
-    public ResponseEntity<?> getBooks(@RequestParam(value = "type") String type) {
+    public ResponseEntity<?> getObjects(@RequestParam(value = "type") String type) {
 
         if (type.equals("all")) {
             List<ObjectsListDTO> objectsListDTO = objectsService.findAll().stream()
@@ -95,6 +110,19 @@ public class ObjectsController {
         review.setText(addReviewRequest.getText());
 
         objectsService.addReview(review);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/objects/{id}/rate")
+    public ResponseEntity<?> rateObject(@PathVariable(name = "id") Long id,
+                                        @RequestBody RateObjectRequest rateObjectRequest) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User u = (User) auth.getPrincipal();
+        u = userRepository.getById(u.getId());
+
+        ratingRepository.save(new Rating(u, objectsService.getById(id), rateObjectRequest.getRating()));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
