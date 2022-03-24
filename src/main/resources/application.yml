@@ -1,9 +1,12 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: b9ade967396b26b61f04185515220e5c9c1ce43ccd6a365b13d0e3131eac44d8
-    url: jdbc:postgresql://ec2-3-227-44-84.compute-1.amazonaws.com:5432/d1vhtrfl8irt1
-    username: ctixcmccpmupvr
+    #password: b9ade967396b26b61f04185515220e5c9c1ce43ccd6a365b13d0e3131eac44d8
+    #url: jdbc:postgresql://ec2-3-227-44-84.compute-1.amazonaws.com:5432/d1vhtrfl8irt1
+    #username: ctixcmccpmupvr
+    password: 98fc2ba4ef452a3bacfee3125737948a5e5b05a1efd6ff724795816b10f1c1f0
+    url: jdbc:postgresql://ec2-52-201-124-168.compute-1.amazonaws.com:5432/d39atugog22c4v
+    username: xtquoyazimzjop
   jpa:
     database: postgresql
     hibernate:
