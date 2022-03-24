@@ -21,7 +21,7 @@ import java.util.HashSet;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "https://itr-course-work-client.herokuapp.com"})
 public class AuthController {
 
     @Autowired
