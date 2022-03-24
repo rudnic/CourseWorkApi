@@ -26,17 +26,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    ReviewRepository reviewRepository;
-
-    @Autowired
-    ObjectsRepository objectsRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RatingRepository ratingRepository;
 
     @GetMapping("/profile/{id}")
     public ResponseEntity<?> getProfile(@PathVariable(name = "id") Long id) {
@@ -48,35 +37,8 @@ public class UserController {
         }
         ProfileDTO profileDTO = new ProfileDTO(optUser.get());
 
-        /*
-        profileDTO.setId(optUser.get().getId());
-        profileDTO.setEmail(optUser.get().getEmail());
-        profileDTO.setReviews(optUser.get().getReviews());
-        profileDTO.setFirstname(optUser.get().getFirstname());
-        profileDTO.setLastname(optUser.get().getLastname());
-        profileDTO.setRatings(optUser.get().getRatings());
-         */
-
-
         return new ResponseEntity<>(profileDTO, HttpStatus.OK);
 
     }
 
-    @GetMapping("/rate")
-    public ResponseEntity<?> rateObject() {
-
-        ratingRepository.save(new Rating(userRepository.getById(7L), objectsRepository.getById(9L), 4.0F));
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/add-review")
-    public ResponseEntity<?> addReview() {
-
-        // How to save and create review //
-        /*reviewRepository.save(new Review(userService.getUserById(Long.valueOf(7)),
-                objectsRepository.findById(Long.valueOf(9)).get(), "BOOK", "Wooow!")); */
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }

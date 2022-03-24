@@ -20,7 +20,7 @@ public class ProfileDTO implements Serializable{
     private String firstname;
     private String lastname;
 
-    private List<ProfileRatingsDTO> ratingsDTO;
+    private List<ProfileRatingsDTO> ratingsObjects;
     private List<ReviewProfileDTO> reviews;
 
     public ProfileDTO(User user) {
@@ -28,7 +28,7 @@ public class ProfileDTO implements Serializable{
         this.email = user.getEmail();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
-        this.ratingsDTO = user.getRatings().stream()
+        this.ratingsObjects = user.getRatings().stream()
                 .map(ProfileRatingsDTO::new)
                 .collect(Collectors.toList());
 

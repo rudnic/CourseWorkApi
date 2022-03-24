@@ -48,16 +48,6 @@ public class ObjectsController {
 
 
         ObjectDTO objectDTO = new ObjectDTO(obj.get());
-        /*
-        objectDTO.setId(obj.get().getId());
-        objectDTO.setName(obj.get().getName());
-        objectDTO.setPicture(obj.get().getPicture());
-        objectDTO.setType(obj.get().getType());
-        objectDTO.setReview(obj.get().getReview());
-        objectDTO.setRating(obj.get().getRating());
-        objectDTO.setRatings(obj.get().getRatings());
-         */
-
         return new ResponseEntity<>(objectDTO, HttpStatus.OK);
     }
 
@@ -95,18 +85,13 @@ public class ObjectsController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
 
-        /*// How to save and create review //
-        reviewRepository.save(new Review(userService.getUserById(Long.valueOf(7)),
-                objectsRepository.findById(Long.valueOf(9)).get(), "BOOK", "Wooow!"));
-
-        Optional<Objects> obj = objectsService.findById(id);*/
-
         Objects object = objectsService.getById(id);
 
         Review review = new Review();
         review.setObject(object);
         review.setUser(user);
         review.setType(addReviewRequest.getType());
+        review.setHeader(addReviewRequest.getHeader());
         review.setText(addReviewRequest.getText());
 
         objectsService.addReview(review);
@@ -119,10 +104,10 @@ public class ObjectsController {
                                         @RequestBody RateObjectRequest rateObjectRequest) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User u = (User) auth.getPrincipal();
-        u = userRepository.getById(u.getId());
+        User user = (User) auth.getPrincipal();
+        user = userRepository.getById(user.getId());
 
-        ratingRepository.save(new Rating(u, objectsService.getById(id), rateObjectRequest.getRating()));
+        ratingRepository.save(new Rating(user, objectsService.getById(id), rateObjectRequest.getRating()));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

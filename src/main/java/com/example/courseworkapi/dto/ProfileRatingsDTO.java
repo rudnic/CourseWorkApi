@@ -15,12 +15,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ProfileRatingsDTO implements Serializable {
 
-    private ObjectsListDTO objectDTO;
+    private ObjectsListDTO objects;
 
     private float rating;
 
     public ProfileRatingsDTO(Rating rating) {
-        this.objectDTO = new ObjectsListDTO(rating.getObject());
+        this.objects = new ObjectsListDTO(rating.getObject());
         this.rating = rating.getRating();
     }
 }

@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddReviewRequest {
     private String type;
+    private String header;
     private String text;
 }

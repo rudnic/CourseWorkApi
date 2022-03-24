@@ -11,12 +11,13 @@ import java.io.Serializable;
 @Data
 public class ReviewProfileDTO implements Serializable {
 
-    private ObjectsListDTO objectDTO;
-
+    private ObjectsListDTO object;
+    private String header;
     private String text;
 
     public ReviewProfileDTO(Review review) {
         this.text = review.getText();
-        this.objectDTO = new ObjectsListDTO(review.getObject());
+        this.header = review.getHeader();
+        this.object = new ObjectsListDTO(review.getObject());
     }
 }

@@ -31,6 +31,7 @@ public class Review implements Serializable {
     @Column(name = "object_type")
     private String type;
 
+    private String header;
     private String text;
 
     public Review(User user, Objects object, String type, String text) {
