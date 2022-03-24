@@ -11,13 +11,7 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: update
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 517367714410-fbtleo2vm1d8bosvd4d8bnjcd3v0e2c0.apps.googleusercontent.com
-            client-secret: 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
+
 
 app:
   jwt:
