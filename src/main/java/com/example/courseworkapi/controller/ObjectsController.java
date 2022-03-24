@@ -37,7 +37,7 @@ public class ObjectsController {
     @Autowired
     private RatingRepository ratingRepository;
 
-    @GetMapping("/objects/{id}")
+    @GetMapping("/object/{id}")
     public ResponseEntity<?> getObject(@PathVariable(name = "id") Long id) {
 
         Optional<Objects> obj = objectsService.findById(id);
@@ -45,7 +45,6 @@ public class ObjectsController {
         if (!obj.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
 
         ObjectDTO objectDTO = new ObjectDTO(obj.get());
         return new ResponseEntity<>(objectDTO, HttpStatus.OK);
