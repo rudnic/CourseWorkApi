@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +44,13 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(), loginRequest.getPassword()
+        ));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         String jwt = jwtProvider.generateAccessToken(loginRequest.getUsername());
         User user = (User) userService.loadUserByUsername(loginRequest.getUsername());
         return ResponseEntity.ok(new JwtResponse(jwt,
@@ -52,8 +62,8 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registrationUser(@RequestBody SignupRequest signupRequest) {
         User user = new User();
-        user.setEmail(signupRequest.getEmail());
-        user.setPassword(signupRequest.getPassword());
+        user.setEmail(signupRequest.getUsername());
+        user.setPassword(encoder.encode(signupRequest.getPassword()));
         user.setFirstname(signupRequest.getFirstname());
         user.setLastname(signupRequest.getLastname());
         user.setRole(ENRoles.ROLE_USER);
