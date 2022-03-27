@@ -27,12 +27,10 @@ public class Rating implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id")
-    //@JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "object_id")
-    //@JsonBackReference
     private Objects object;
 
     private float rating;

@@ -33,23 +33,13 @@ public class User implements UserDetails, Serializable {
     private ENRoles role;
 
     @OneToMany(mappedBy = "user")
-    // @JsonBackReference
     private List<Review> reviews;
 
-    /*@ManyToMany
-    @JoinTable(name = "user_ratings",
-        joinColumns = {
-            @JoinColumn(name = "user_id", referencedColumnName = "id")
-        },
-        inverseJoinColumns = {
-            @JoinColumn(name = "object_id", referencedColumnName = "id")
-        }
-    )
-    private List<Objects> ratedObjects;*/
-
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    // @JsonManagedReference
     private List<Rating> ratings;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserPhoto> userPhotos;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -81,8 +71,5 @@ public class User implements UserDetails, Serializable {
         return true;
     }
 
-    /*public void addRatedObject(Objects obj) {
-        this.getRatedObjects().add(obj);
-    }*/
 
 }

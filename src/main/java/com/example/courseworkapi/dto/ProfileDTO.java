@@ -1,5 +1,6 @@
 package com.example.courseworkapi.dto;
 import com.example.courseworkapi.models.User;
+import com.example.courseworkapi.models.UserPhoto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class ProfileDTO implements Serializable{
 
     private List<ProfileRatingsDTO> ratingsObjects;
     private List<ReviewProfileDTO> reviews;
+    private List<UserPhoto> photos;
 
     public ProfileDTO(User user) {
         this.id = user.getId();
@@ -35,5 +37,6 @@ public class ProfileDTO implements Serializable{
         this.reviews = user.getReviews().stream()
                 .map(ReviewProfileDTO::new)
                 .collect(Collectors.toList());
+        this.photos = user.getUserPhotos();
     }
 }
