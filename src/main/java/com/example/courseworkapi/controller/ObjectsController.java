@@ -12,6 +12,7 @@ import com.example.courseworkapi.repository.RatingRepository;
 import com.example.courseworkapi.repository.ReviewRepository;
 import com.example.courseworkapi.repository.UserRepository;
 import com.example.courseworkapi.services.object.ObjectsService;
+import com.example.courseworkapi.services.rating.RatingService;
 import com.example.courseworkapi.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,9 @@ public class ObjectsController {
 
     @Autowired
     private RatingRepository ratingRepository;
+
+    @Autowired
+    private RatingService ratingService;
 
     @GetMapping("/object/{id}")
     public ResponseEntity<?> getObject(@PathVariable(name = "id") Long id) {
@@ -106,9 +110,16 @@ public class ObjectsController {
         User user = (User) auth.getPrincipal();
         user = userRepository.getById(user.getId());
 
-        ratingRepository.save(new Rating(user, objectsService.getById(id), rateObjectRequest.getRating()));
+        ratingService.addRating(user, objectsService.getById(id), rateObjectRequest.getRating());
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/objects/{id}/rating")
+    public ResponseEntity<?> getObjectRating(@PathVariable(name = "id") Long id) {
+
+        float rating = objectsService.getById(id).getRating();
+        return new ResponseEntity<>(rating, HttpStatus.OK);
     }
 
 }

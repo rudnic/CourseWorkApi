@@ -8,11 +8,11 @@ import java.io.Serializable;
 @Data
 public class ObjectRatingsDTO implements Serializable {
 
-    private UserListDTO userListDTO;
+    private UserListDTO user;
     private float rating;
 
     public ObjectRatingsDTO(Rating rating) {
-        this.userListDTO = new UserListDTO(rating.getUser());
+        this.user = new UserListDTO(rating.getUser());
         this.rating = rating.getRating();
     }
 }
